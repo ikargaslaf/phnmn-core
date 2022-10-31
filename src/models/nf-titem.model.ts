@@ -11,6 +11,16 @@ export class NfTitem extends Entity {
   id?: string;
 
   @property({
+    type: 'number',
+  })
+  tokenId?: number;
+
+  @property({
+    type: 'number',
+  })
+  rarity?: number;
+
+  @property({
     type: 'string',
   })
   name?: string;
