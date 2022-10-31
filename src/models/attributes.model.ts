@@ -1,0 +1,55 @@
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {NfTitem} from './nf-titem.model';
+
+@model()
+export class Attributes extends Entity {
+  @property({
+    type: 'string',
+    id: true,
+    generated: true,
+  })
+  id?: string;
+
+  @property({
+    type: 'string',
+  })
+  mask?: string;
+
+  @property({
+    type: 'string',
+  })
+  hat?: string;
+
+  @property({
+    type: 'string',
+  })
+  glasses?: string;
+
+  @property({
+    type: 'string',
+  })
+  jewerly?: string;
+
+  @property({
+    type: 'string',
+  })
+  clothes?: string;
+
+  @property({
+    type: 'string',
+  })
+  tatoos?: string;
+
+  @belongsTo(() => NfTitem)
+  nfTitemId: string;
+
+  constructor(data?: Partial<Attributes>) {
+    super(data);
+  }
+}
+
+export interface AttributesRelations {
+  // describe navigational properties here
+}
+
+export type AttributesWithRelations = Attributes & AttributesRelations;
