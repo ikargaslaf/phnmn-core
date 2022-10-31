@@ -40,7 +40,7 @@
     "type": "git",
     "url": ""
   },
-  "author": "Egor Kozlov <egor.kozlov@rsquad.io>",
+  "author": "Egor Kozlov <kozlov@papaya.land>",
   "license": "",
   "files": [
     "README.md",
@@ -57,7 +57,9 @@
     "@loopback/service-proxy": "^4.1.2",
     "@alch/alchemy-web3": "^1.4.4",
     "ethers": "^5.7.2",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "canvas": "^2.8.0",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.2",
