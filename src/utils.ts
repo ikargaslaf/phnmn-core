@@ -5,7 +5,7 @@ const fs = require('fs');
 const RARITY = ['COMMON', 'RARE', 'EPIC', 'LEGENDARY'];
 
 export async function generateImage(
-  androidId: string | undefined,
+  tokenId: number | undefined,
   rarity: number,
   traits: any,
 ) {
@@ -28,5 +28,5 @@ export async function generateImage(
   }
 
   const buf = canvas.toBuffer('image/png');
-  fs.writeFileSync(`./public/androids/${androidId}.png`, buf);
+  fs.writeFileSync(`./public/${tokenId}.png`, buf);
 }
