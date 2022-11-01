@@ -1,4 +1,5 @@
 import {ApplicationConfig, PhnmnCoreApplication} from './application';
+import {ContractsService} from './services';
 
 export * from './application';
 
@@ -6,6 +7,7 @@ export async function main(options: ApplicationConfig = {}) {
   const app = new PhnmnCoreApplication(options);
   await app.boot();
   await app.start();
+  app.service(ContractsService).getValue(app);
 
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
