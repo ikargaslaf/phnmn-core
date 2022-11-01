@@ -11,4 +11,4 @@ export enum Contracts {
   ROUTER = 'Router',
 }
 
-export const RARITY = ['COMMON, RARE, EPIC, LEGENDARY'];
+export const RARITY = ['COMMON', 'RARE', 'EPIC', 'LEGENDARY'];

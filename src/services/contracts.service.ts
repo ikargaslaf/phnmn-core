@@ -114,7 +114,7 @@ export class ContractsService {
   async processingItemsMinted(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId;
-      const rarity = events[i].args.tokenId;
+      const rarity = events[i].args.rarity;
       const meta = await this.nftRepository.create({
         tokenId: tokenId,
         rarity: rarity,
