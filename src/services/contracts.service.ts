@@ -26,7 +26,6 @@ export class ContractsService {
     private nftRepository: NfTitemRepository,
   ) {
     this.createContractInstanses();
-    this.startListener(Events.MINT, Contracts.COLLECTION);
   }
 
   async createContractInstanses() {
