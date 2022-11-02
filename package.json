@@ -49,17 +49,18 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.4",
     "@loopback/boot": "^4.1.2",
     "@loopback/core": "^3.1.2",
     "@loopback/repository": "^4.1.2",
     "@loopback/rest": "^11.1.2",
     "@loopback/rest-explorer": "^4.1.2",
     "@loopback/service-proxy": "^4.1.2",
-    "@alch/alchemy-web3": "^1.4.4",
-    "ethers": "^5.7.2",
-    "tslib": "^2.0.0",
     "canvas": "^2.8.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "ethers": "^5.7.2",
+    "loopback-connector-postgresql": "^5.5.2",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.2",

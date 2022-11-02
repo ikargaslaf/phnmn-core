@@ -4,11 +4,11 @@ import {Attributes} from './attributes.model';
 @model()
 export class NfTitem extends Entity {
   @property({
-    type: 'string',
+    type: 'number',
     id: true,
     generated: true,
   })
-  id?: string;
+  id?: number;
 
   @property({
     type: 'number',

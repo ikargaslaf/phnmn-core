@@ -1,22 +1,13 @@
-import {
-  repository,
-} from '@loopback/repository';
-import {
-  param,
-  get,
-  getModelSchemaRef,
-} from '@loopback/rest';
-import {
-  Attributes,
-  NfTitem,
-} from '../models';
+import {repository} from '@loopback/repository';
+import {param, get, getModelSchemaRef} from '@loopback/rest';
+import {Attributes, NfTitem} from '../models';
 import {AttributesRepository} from '../repositories';
 
 export class AttributesNfTitemController {
   constructor(
     @repository(AttributesRepository)
     public attributesRepository: AttributesRepository,
-  ) { }
+  ) {}
 
   @get('/attributes/{id}/nf-titem', {
     responses: {

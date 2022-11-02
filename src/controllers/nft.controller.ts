@@ -78,7 +78,7 @@ export class NftController {
     },
   })
   async findById(
-    @param.path.string('id') id: string,
+    @param.path.number('id') id: number,
     @param.filter(NfTitem, {exclude: 'where'})
     filter?: FilterExcludingWhere<NfTitem>,
   ): Promise<NfTitem> {
