@@ -2,7 +2,7 @@ import {Entity, model, property, hasOne} from '@loopback/repository';
 import {Attributes} from './attributes.model';
 
 @model()
-export class NfTitem extends Entity {
+export class NFTitem extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -38,13 +38,13 @@ export class NfTitem extends Entity {
   @hasOne(() => Attributes)
   attributes: Attributes;
 
-  constructor(data?: Partial<NfTitem>) {
+  constructor(data?: Partial<NFTitem>) {
     super(data);
   }
 }
 
-export interface NfTitemRelations {
+export interface NFTitemRelations {
   // describe navigational properties here
 }
 
-export type NfTitemWithRelations = NfTitem & NfTitemRelations;
+export type NfTitemWithRelations = NFTitem & NFTitemRelations;

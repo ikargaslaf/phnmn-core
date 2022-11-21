@@ -1,6 +1,6 @@
 import {repository} from '@loopback/repository';
 import {param, get, getModelSchemaRef} from '@loopback/rest';
-import {Attributes, NfTitem} from '../models';
+import {Attributes, NFTitem} from '../models';
 import {AttributesRepository} from '../repositories';
 
 export class AttributesNfTitemController {
@@ -15,15 +15,15 @@ export class AttributesNfTitemController {
         description: 'NfTitem belonging to Attributes',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(NfTitem)},
+            schema: {type: 'array', items: getModelSchemaRef(NFTitem)},
           },
         },
       },
     },
   })
-  async getNfTitem(
+  async getNFTitem(
     @param.path.string('id') id: typeof Attributes.prototype.id,
-  ): Promise<NfTitem> {
+  ): Promise<NFTitem> {
     return this.attributesRepository.nfTitem(id);
   }
 }

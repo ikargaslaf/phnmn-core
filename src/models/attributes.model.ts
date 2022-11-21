@@ -1,5 +1,5 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {NfTitem} from './nf-titem.model';
+import {NFTitem} from './nft-item.model';
 
 @model()
 export class Attributes extends Entity {
@@ -40,8 +40,8 @@ export class Attributes extends Entity {
   })
   tatoos?: string;
 
-  @belongsTo(() => NfTitem)
-  nfTitemId: string;
+  @belongsTo(() => NFTitem)
+  NFTitemId: string;
 
   constructor(data?: Partial<Attributes>) {
     super(data);

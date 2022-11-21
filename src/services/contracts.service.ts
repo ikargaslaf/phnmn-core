@@ -7,8 +7,8 @@ import {ProviderService} from './provider.service';
 import {HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
-import {NfTitem, Attributes} from '../models';
-import {NfTitemRepository, AttributesRepository} from '../repositories';
+import {NFTitem, Attributes} from '../models';
+import {NFTitemRepository, AttributesRepository} from '../repositories';
 
 import {Events, Contracts, RARITY} from '../constants';
 
@@ -22,8 +22,8 @@ export class ContractsService {
   constructor(
     @service(ProviderService)
     private providerService: ProviderService,
-    @repository(NfTitemRepository)
-    private nftRepository: NfTitemRepository,
+    @repository(NFTitemRepository)
+    private nftRepository: NFTitemRepository,
   ) {
     this.createContractInstanses();
   }

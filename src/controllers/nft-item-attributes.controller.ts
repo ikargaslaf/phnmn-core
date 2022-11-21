@@ -15,13 +15,13 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {NfTitem, Attributes} from '../models';
-import {NfTitemRepository} from '../repositories';
+import {NFTitem, Attributes} from '../models';
+import {NFTitemRepository} from '../repositories';
 
 export class NfTitemAttributesController {
   constructor(
-    @repository(NfTitemRepository)
-    protected nfTitemRepository: NfTitemRepository,
+    @repository(NFTitemRepository)
+    protected NFTitemRepository: NFTitemRepository,
   ) {}
 
   @get('/nf-titems/{id}/attributes', {
@@ -40,7 +40,7 @@ export class NfTitemAttributesController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Attributes>,
   ): Promise<Attributes> {
-    return this.nfTitemRepository.attributes(id).get(filter);
+    return this.NFTitemRepository.attributes(id).get(filter);
   }
 
   @post('/nf-titems/{id}/attributes', {
@@ -52,21 +52,21 @@ export class NfTitemAttributesController {
     },
   })
   async create(
-    @param.path.string('id') id: typeof NfTitem.prototype.id,
+    @param.path.string('id') id: typeof NFTitem.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Attributes, {
             title: 'NewAttributesInNfTitem',
             exclude: ['id'],
-            optional: ['nfTitemId'],
+            optional: ['NFTitemId'],
           }),
         },
       },
     })
     attributes: Omit<Attributes, 'id'>,
   ): Promise<Attributes> {
-    return this.nfTitemRepository.attributes(id).create(attributes);
+    return this.NFTitemRepository.attributes(id).create(attributes);
   }
 
   @patch('/nf-titems/{id}/attributes', {
@@ -90,7 +90,7 @@ export class NfTitemAttributesController {
     @param.query.object('where', getWhereSchemaFor(Attributes))
     where?: Where<Attributes>,
   ): Promise<Count> {
-    return this.nfTitemRepository.attributes(id).patch(attributes, where);
+    return this.NFTitemRepository.attributes(id).patch(attributes, where);
   }
 
   @del('/nf-titems/{id}/attributes', {
@@ -106,6 +106,6 @@ export class NfTitemAttributesController {
     @param.query.object('where', getWhereSchemaFor(Attributes))
     where?: Where<Attributes>,
   ): Promise<Count> {
-    return this.nfTitemRepository.attributes(id).delete(where);
+    return this.NFTitemRepository.attributes(id).delete(where);
   }
 }

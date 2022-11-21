@@ -1,4 +1,4 @@
 export * from './attributes.model';
-export * from './nf-titem.model';
+export * from './nft-item.model';
 
 export * from './service.model';

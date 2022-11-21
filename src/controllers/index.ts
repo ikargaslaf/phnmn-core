@@ -1,3 +1,3 @@
-export * from './nf-titem-attributes.controller';
-export * from './attributes-nf-titem.controller';
+export * from './nft-item-attributes.controller';
+export * from './attributes-nft-item.controller';
 export * from './nft.controller';

@@ -1,21 +1,21 @@
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {NfTitem, NfTitemRelations, Attributes} from '../models';
+import {NFTitem, NFTitemRelations, Attributes} from '../models';
 import {AttributesRepository} from './attributes.repository';
 
-export class NfTitemRepository extends DefaultCrudRepository<
-  NfTitem,
-  typeof NfTitem.prototype.id,
-  NfTitemRelations
+export class NFTitemRepository extends DefaultCrudRepository<
+NFTitem,
+  typeof NFTitem.prototype.id,
+  NFTitemRelations
 > {
 
-  public readonly attributes: HasOneRepositoryFactory<Attributes, typeof NfTitem.prototype.id>;
+  public readonly attributes: HasOneRepositoryFactory<Attributes, typeof NFTitem.prototype.id>;
 
   constructor(
     @inject('datasources.db') dataSource: DbDataSource, @repository.getter('AttributesRepository') protected attributesRepositoryGetter: Getter<AttributesRepository>,
   ) {
-    super(NfTitem, dataSource);
+    super(NFTitem, dataSource);
     this.attributes = this.createHasOneRepositoryFactoryFor('attributes', attributesRepositoryGetter);
     this.registerInclusionResolver('attributes', this.attributes.inclusionResolver);
   }

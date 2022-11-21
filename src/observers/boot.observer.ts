@@ -7,7 +7,7 @@ import {
   LifeCycleObserver, // The interface
 } from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {NfTitemRepository, ServiceRepository} from '../repositories';
+import {NFTitemRepository, ServiceRepository} from '../repositories';
 import {ContractsService, ProviderService} from '../services';
 /**
  * This class will be bound to the application as a `LifeCycleObserver` during
@@ -18,7 +18,7 @@ export class BootObserver implements LifeCycleObserver {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) private app: Application,
     @repository(ServiceRepository) private serviceRepository: ServiceRepository,
-    @repository(NfTitemRepository) private nftRepository: NfTitemRepository,
+    @repository(NFTitemRepository) private nftRepository: NFTitemRepository,
     @service(ContractsService) private contractsService: ContractsService,
     @service(ProviderService) private providerService: ProviderService,
   ) {}

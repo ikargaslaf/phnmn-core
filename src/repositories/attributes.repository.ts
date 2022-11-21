@@ -1,8 +1,8 @@
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {Attributes, AttributesRelations, NfTitem} from '../models';
-import {NfTitemRepository} from './nf-titem.repository';
+import {Attributes, AttributesRelations, NFTitem} from '../models';
+import {NFTitemRepository} from './nft-item.repository';
 
 export class AttributesRepository extends DefaultCrudRepository<
   Attributes,
@@ -10,10 +10,10 @@ export class AttributesRepository extends DefaultCrudRepository<
   AttributesRelations
 > {
 
-  public readonly nfTitem: BelongsToAccessor<NfTitem, typeof Attributes.prototype.id>;
+  public readonly nfTitem: BelongsToAccessor<NFTitem, typeof Attributes.prototype.id>;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource, @repository.getter('NfTitemRepository') protected nfTitemRepositoryGetter: Getter<NfTitemRepository>,
+    @inject('datasources.db') dataSource: DbDataSource, @repository.getter('NfTitemRepository') protected nfTitemRepositoryGetter: Getter<NFTitemRepository>,
   ) {
     super(Attributes, dataSource);
     this.nfTitem = this.createBelongsToAccessorFor('nfTitem', nfTitemRepositoryGetter,);

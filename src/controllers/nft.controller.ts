@@ -17,15 +17,15 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {NfTitem} from '../models';
-import {NfTitemRepository} from '../repositories';
+import {NFTitem} from '../models';
+import {NFTitemRepository} from '../repositories';
 import {ContractsService} from '../services';
 import {service} from '@loopback/core';
 
 export class NftController {
   constructor(
-    @repository(NfTitemRepository)
-    public nfTitemRepository: NfTitemRepository,
+    @repository(NFTitemRepository)
+    public NFTitemRepository: NFTitemRepository,
     @service(ContractsService) private contractService: ContractsService,
   ) {}
 
@@ -36,15 +36,15 @@ export class NftController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(NfTitem, {includeRelations: true}),
+          items: getModelSchemaRef(NFTitem, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(NfTitem) filter?: Filter<NfTitem>,
-  ): Promise<NfTitem[]> {
-    return this.nfTitemRepository.find(filter);
+    @param.filter(NFTitem) filter?: Filter<NFTitem>,
+  ): Promise<NFTitem[]> {
+    return this.NFTitemRepository.find(filter);
   }
 
   @get('/nft-items/{address}')
@@ -52,20 +52,20 @@ export class NftController {
     description: 'NfTitem model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(NfTitem, {includeRelations: true}),
+        schema: getModelSchemaRef(NFTitem, {includeRelations: true}),
       },
     },
   })
   async findByAddress(
     @param.path.string('id') id: string,
     @param.path.string('address') address: string,
-    @param.filter(NfTitem, {exclude: 'where'})
-    filter?: FilterExcludingWhere<NfTitem>,
-  ): Promise<NfTitem[]> {
+    @param.filter(NFTitem, {exclude: 'where'})
+    filter?: FilterExcludingWhere<NFTitem>,
+  ): Promise<NFTitem[]> {
     const tokenIds = await this.contractService.collection.tokenIdByAddress(
       address,
     );
-    return this.nfTitemRepository.find({where: {or: tokenIds}, ...filter});
+    return this.NFTitemRepository.find({where: {or: tokenIds}, ...filter});
   }
 
   @get('/nft-items/{address}/{id}')
@@ -73,15 +73,15 @@ export class NftController {
     description: 'NfTitem model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(NfTitem, {includeRelations: true}),
+        schema: getModelSchemaRef(NFTitem, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(NfTitem, {exclude: 'where'})
-    filter?: FilterExcludingWhere<NfTitem>,
-  ): Promise<NfTitem> {
-    return this.nfTitemRepository.findById(id, filter);
+    @param.filter(NFTitem, {exclude: 'where'})
+    filter?: FilterExcludingWhere<NFTitem>,
+  ): Promise<NFTitem> {
+    return this.NFTitemRepository.findById(id, filter);
   }
 }
