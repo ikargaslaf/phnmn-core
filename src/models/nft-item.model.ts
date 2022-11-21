@@ -1,8 +1,7 @@
-import {Entity, model, property, hasOne} from '@loopback/repository';
-import {Attributes} from './attributes.model';
+import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class NFTitem extends Entity {
+export class NftItem extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -16,9 +15,9 @@ export class NFTitem extends Entity {
   tokenId?: number;
 
   @property({
-    type: 'number',
+    type: 'string',
   })
-  rarity?: number;
+  contractAddress?: string;
 
   @property({
     type: 'string',
@@ -35,13 +34,14 @@ export class NFTitem extends Entity {
   })
   image?: string;
 
-  constructor(data?: Partial<NFTitem>) {
+
+  constructor(data?: Partial<NftItem>) {
     super(data);
   }
 }
 
-export interface NFTitemRelations {
+export interface NftItemRelations {
   // describe navigational properties here
 }
 
-export type NfTitemWithRelations = NFTitem & NFTitemRelations;
+export type NftItemWithRelations = NftItem & NftItemRelations;

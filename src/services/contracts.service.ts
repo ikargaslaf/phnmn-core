@@ -7,7 +7,7 @@ import {ProviderService} from './provider.service';
 import {HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
-import {NFTitemRepository, AttributesRepository} from '../repositories';
+import {ApeRepository} from '../repositories';
 
 import {Events, Contracts, RARITY} from '../constants';
 
@@ -21,8 +21,8 @@ export class ContractsService {
   constructor(
     @service(ProviderService)
     private providerService: ProviderService,
-    @repository(NFTitemRepository)
-    private nftRepository: NFTitemRepository,
+    @repository(ApeRepository)
+    private ApeRepository: ApeRepository,
   ) {
     this.createContractInstanses();
   }
@@ -114,9 +114,10 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId;
       const rarity = events[i].args.rarity;
-      const meta = await this.nftRepository.create({
+      const meta = await this.ApeRepository.create({
         tokenId: tokenId,
         rarity: rarity,
+        contractAddress: process.env.COLLECTION!,
         name: `Ape#${tokenId}`,
         description: RARITY[rarity],
         image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
