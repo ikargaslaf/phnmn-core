@@ -3,3 +3,4 @@ export * from './user.model';
 export * from './sales.model';
 export * from './nft-item.model';
 export * from './ape.model';
+export * from './listing.model';

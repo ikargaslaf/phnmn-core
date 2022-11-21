@@ -13,11 +13,13 @@ import {Events, Contracts, RARITY} from '../constants';
 
 import Collection from '../contracts/abi/Collection.json';
 import Router from '../contracts/abi/Router.json';
+import Auction from '../contracts/abi/Auction.json'
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class ContractsService {
   collection: Contract;
   router: Contract;
+  auction: Contract
   constructor(
     @service(ProviderService)
     private providerService: ProviderService,
@@ -39,6 +41,12 @@ export class ContractsService {
       Router.abi,
       this.providerService.provider,
     );
+
+    this.auction = new ethers.Contract(
+      process.env.AUCTION as string,
+      Auction.abi,
+      this.providerService.provider,
+    );
   }
 
   getContractByString(contractName: string): {
@@ -55,6 +63,11 @@ export class ContractsService {
         return {
           eventOwnedContract: this.router,
           contractName: Contracts.ROUTER,
+        };
+      case Contracts.AUCTION:
+        return {
+          eventOwnedContract: this.auction,
+          contractName: Contracts.AUCTION,
         };
       default:
         throw new HttpErrors.NotFound('Contract not found');

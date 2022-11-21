@@ -34,7 +34,6 @@ export class NftItem extends Entity {
   })
   image?: string;
 
-
   constructor(data?: Partial<NftItem>) {
     super(data);
   }
