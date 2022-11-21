@@ -7,7 +7,6 @@ import {ProviderService} from './provider.service';
 import {HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
-import {NFTitem, Attributes} from '../models';
 import {NFTitemRepository, AttributesRepository} from '../repositories';
 
 import {Events, Contracts, RARITY} from '../constants';
@@ -121,14 +120,6 @@ export class ContractsService {
         name: `Ape#${tokenId}`,
         description: RARITY[rarity],
         image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
-      });
-      await this.nftRepository.attributes(meta.id!).create({
-        mask: '',
-        hat: '',
-        glasses: '',
-        jewerly: '',
-        clothes: '',
-        tatoos: '',
       });
     }
   }

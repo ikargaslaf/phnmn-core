@@ -40,9 +40,6 @@ export class Attributes extends Entity {
   })
   tatoos?: string;
 
-  @belongsTo(() => NFTitem)
-  NFTitemId: string;
-
   constructor(data?: Partial<Attributes>) {
     super(data);
   }

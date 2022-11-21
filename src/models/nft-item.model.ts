@@ -35,9 +35,6 @@ export class NFTitem extends Entity {
   })
   image?: string;
 
-  @hasOne(() => Attributes)
-  attributes: Attributes;
-
   constructor(data?: Partial<NFTitem>) {
     super(data);
   }
