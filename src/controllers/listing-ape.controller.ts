@@ -8,31 +8,31 @@ import {
 } from '@loopback/rest';
 import {
   Listing,
-  User,
+  Ape,
 } from '../models';
 import {ListingRepository} from '../repositories';
 
-export class ListingUserController {
+export class ListingApeController {
   constructor(
     @repository(ListingRepository)
     public listingRepository: ListingRepository,
   ) { }
 
-  @get('/listings/{id}/user', {
+  @get('/listings/{id}/ape', {
     responses: {
       '200': {
-        description: 'User belonging to Listing',
+        description: 'Ape belonging to Listing',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(User)},
+            schema: {type: 'array', items: getModelSchemaRef(Ape)},
           },
         },
       },
     },
   })
-  async getUser(
+  async getApe(
     @param.path.number('id') id: typeof Listing.prototype.id,
-  ): Promise<User> {
-    return this.listingRepository.user(id);
+  ): Promise<Ape> {
+    return this.listingRepository.ape(id);
   }
 }

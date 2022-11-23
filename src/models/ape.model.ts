@@ -1,6 +1,7 @@
-import {model, property, hasMany} from '@loopback/repository';
+import {model, property, hasMany, hasOne} from '@loopback/repository';
 import {NftItem} from '.';
 import {Sales} from './sales.model';
+import {Listing} from './listing.model';
 
 @model()
 export class Ape extends NftItem {
@@ -48,6 +49,9 @@ export class Ape extends NftItem {
 
   @hasMany(() => Sales)
   sales: Sales[];
+
+  @hasOne(() => Listing)
+  listing: Listing;
 
   constructor(data?: Partial<Ape>) {
     super(data);

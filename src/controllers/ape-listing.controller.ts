@@ -16,64 +16,64 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  User,
+  Ape,
   Listing,
 } from '../models';
-import {UserRepository} from '../repositories';
+import {ApeRepository} from '../repositories';
 
-export class UserListingController {
+export class ApeListingController {
   constructor(
-    @repository(UserRepository) protected userRepository: UserRepository,
+    @repository(ApeRepository) protected apeRepository: ApeRepository,
   ) { }
 
-  @get('/users/{id}/listings', {
+  @get('/apes/{id}/listing', {
     responses: {
       '200': {
-        description: 'Array of User has many Listing',
+        description: 'Ape has one Listing',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Listing)},
+            schema: getModelSchemaRef(Listing),
           },
         },
       },
     },
   })
-  async find(
+  async get(
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Listing>,
-  ): Promise<Listing[]> {
-    return this.userRepository.listings(id).find(filter);
+  ): Promise<Listing> {
+    return this.apeRepository.listing(id).get(filter);
   }
 
-  @post('/users/{id}/listings', {
+  @post('/apes/{id}/listing', {
     responses: {
       '200': {
-        description: 'User model instance',
+        description: 'Ape model instance',
         content: {'application/json': {schema: getModelSchemaRef(Listing)}},
       },
     },
   })
   async create(
-    @param.path.number('id') id: typeof User.prototype.id,
+    @param.path.number('id') id: typeof Ape.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Listing, {
-            title: 'NewListingInUser',
+            title: 'NewListingInApe',
             exclude: ['id'],
-            optional: ['userId']
+            optional: ['apeId']
           }),
         },
       },
     }) listing: Omit<Listing, 'id'>,
   ): Promise<Listing> {
-    return this.userRepository.listings(id).create(listing);
+    return this.apeRepository.listing(id).create(listing);
   }
 
-  @patch('/users/{id}/listings', {
+  @patch('/apes/{id}/listing', {
     responses: {
       '200': {
-        description: 'User.Listing PATCH success count',
+        description: 'Ape.Listing PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class UserListingController {
     listing: Partial<Listing>,
     @param.query.object('where', getWhereSchemaFor(Listing)) where?: Where<Listing>,
   ): Promise<Count> {
-    return this.userRepository.listings(id).patch(listing, where);
+    return this.apeRepository.listing(id).patch(listing, where);
   }
 
-  @del('/users/{id}/listings', {
+  @del('/apes/{id}/listing', {
     responses: {
       '200': {
-        description: 'User.Listing DELETE success count',
+        description: 'Ape.Listing DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class UserListingController {
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Listing)) where?: Where<Listing>,
   ): Promise<Count> {
-    return this.userRepository.listings(id).delete(where);
+    return this.apeRepository.listing(id).delete(where);
   }
 }

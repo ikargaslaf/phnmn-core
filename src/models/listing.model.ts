@@ -1,5 +1,5 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {User} from './user.model';
+import {Ape} from './ape.model';
 
 @model()
 export class Listing extends Entity {
@@ -26,8 +26,8 @@ export class Listing extends Entity {
   })
   price?: string;
 
-  @belongsTo(() => User)
-  userId: number;
+  @belongsTo(() => Ape)
+  apeId: number;
 
   constructor(data?: Partial<Listing>) {
     super(data);

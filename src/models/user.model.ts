@@ -1,5 +1,4 @@
 import {Entity, model, property, hasMany} from '@loopback/repository';
-import {Listing} from './listing.model';
 
 @model()
 export class User extends Entity {
@@ -25,9 +24,6 @@ export class User extends Entity {
     type: 'string',
   })
   telegram?: string;
-
-  @hasMany(() => Listing)
-  listings: Listing[];
 
   constructor(data?: Partial<User>) {
     super(data);

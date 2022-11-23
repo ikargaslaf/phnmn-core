@@ -34,6 +34,17 @@ export class NftItem extends Entity {
   })
   image?: string;
 
+  @property({
+    type: 'boolean',
+  })
+  onSale?: boolean;
+
+  @property({
+    type: 'boolean',
+  })
+  onAuction?: boolean;
+
+
   constructor(data?: Partial<NftItem>) {
     super(data);
   }
