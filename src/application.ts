@@ -1,5 +1,5 @@
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
@@ -9,6 +9,11 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import { TokenServiceBindings, TokenServiceConstants, UserServiceBindings } from './keys';
+import { JWTService, UserService} from './services';
+import { AuthenticationComponent, registerAuthenticationStrategy } from '@loopback/authentication';
+import {JWTAuthenticationComponent} from './jwt-authentication-component';
+import { JWTAuthenticationStrategy } from './strategy/jwt-strategy';
 
 export {ApplicationConfig};
 
@@ -29,7 +34,11 @@ export class PhnmnCoreApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
-
+    this.component(AuthenticationComponent);
+    this.component(JWTAuthenticationComponent);
+    this.setUpBindings();
+    this.add(createBindingFromClass(JWTAuthenticationStrategy));
+    registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
@@ -40,5 +49,23 @@ export class PhnmnCoreApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  private setUpBindings(): void {
+    // Bind package.json to the application context
+    // this.bind(PackageKey).to(pkg);
+
+    this.bind(TokenServiceBindings.TOKEN_SECRET).to(
+      TokenServiceConstants.TOKEN_SECRET_VALUE,
+    );
+
+    this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to(
+      TokenServiceConstants.TOKEN_EXPIRES_IN_VALUE,
+    );
+
+    this.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(JWTService);
+
+    // // Bind bcrypt hash services
+    this.bind(UserServiceBindings.USER_SERVICE).toClass(UserService);
   }
 }

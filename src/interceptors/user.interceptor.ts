@@ -11,9 +11,9 @@ import {HttpErrors} from '@loopback/rest';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
 import { ethers } from 'ethers';
-@injectable({tags: {key: ValidateUniqueUserInterceptor.BINDING_KEY}})
-export class ValidateUniqueUserInterceptor implements Provider<Interceptor> {
-  static readonly BINDING_KEY = `interceptors.${ValidateUniqueUserInterceptor.name}`;
+@injectable({tags: {key: FindOrCreateUserInterceptor.BINDING_KEY}})
+export class FindOrCreateUserInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = `interceptors.${FindOrCreateUserInterceptor.name}`;
 
   constructor(
     @repository(UserRepository) public userRepository: UserRepository,
@@ -28,22 +28,19 @@ export class ValidateUniqueUserInterceptor implements Provider<Interceptor> {
     next: () => ValueOrPromise<InvocationResult>,
   ) {
     const newUser: Partial<User> = invocationCtx.args[0]
-    let filter: Filter<User>  = {where: {login: newUser.login}};
-
-    const isUserExist: boolean = await this.isUserExist(filter)
-
-    if (isUserExist) {
-      throw new HttpErrors.Conflict('User with this login already exists')
-    }
 
     const isAddress: boolean = ethers.utils.isAddress(newUser.address!)
-
     if(!isAddress){
       throw new HttpErrors.ExpectationFailed('Expected valid eth address')
     }
 
-    const result = await next();
+    let filter: Filter<User>  = {where: {login: newUser.login, address: newUser.address}};
+    const isUserExist: boolean = await this.isUserExist(filter)
+    if(!isUserExist){
+      await this.userRepository.create({login: newUser.login, address: newUser.address})
+    }
 
+    const result = await next();
     return result;
   }
 

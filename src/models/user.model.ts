@@ -23,6 +23,12 @@ export class User extends Entity {
 
   @property({
     type: 'string',
+    default: 'user',
+  })
+  role: string;
+
+  @property({
+    type: 'string',
   })
   telegram?: string;
 

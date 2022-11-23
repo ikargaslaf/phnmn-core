@@ -50,6 +50,7 @@
   ],
   "dependencies": {
     "@alch/alchemy-web3": "^1.4.4",
+    "@loopback/authentication": "^9.0.4",
     "@loopback/boot": "^5.0.4",
     "@loopback/core": "^4.0.4",
     "@loopback/repository": "^5.0.4",
@@ -59,6 +60,7 @@
     "canvas": "^2.8.0",
     "dotenv": "^10.0.0",
     "ethers": "^5.7.2",
+    "jsonwebtoken": "^8.5.1",
     "loopback-connector-postgresql": "^5.5.2",
     "tslib": "^2.0.0"
   },
