@@ -76,25 +76,6 @@ export class UserController {
     return this.userRepository.find(filter);
   }
 
-  @patch('/users')
-  @response(200, {
-    description: 'User PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
-        },
-      },
-    })
-    user: User,
-    @param.where(User) where?: Where<User>,
-  ): Promise<Count> {
-    return this.userRepository.updateAll(user, where);
-  }
-
   @get('/users/{id}')
   @response(200, {
     description: 'User model instance',
@@ -127,24 +108,5 @@ export class UserController {
     user: User,
   ): Promise<void> {
     await this.userRepository.updateById(id, user);
-  }
-
-  @put('/users/{id}')
-  @response(204, {
-    description: 'User PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() user: User,
-  ): Promise<void> {
-    await this.userRepository.replaceById(id, user);
-  }
-
-  @del('/users/{id}')
-  @response(204, {
-    description: 'User DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.userRepository.deleteById(id);
   }
 }
