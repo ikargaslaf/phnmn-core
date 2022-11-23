@@ -7,17 +7,16 @@ import {
   ValueOrPromise
 } from '@loopback/core';
 import {Filter, repository} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
-import {ValidationError} from './validation-error';
-
-
+import { ethers } from 'ethers';
 @injectable({tags: {key: ValidateUniqueUserInterceptor.BINDING_KEY}})
 export class ValidateUniqueUserInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = `interceptors.${ValidateUniqueUserInterceptor.name}`;
 
   constructor(
-    @repository(User) public userRepository: UserRepository,
+    @repository(UserRepository) public userRepository: UserRepository,
   ) {}
 
   value() {
@@ -29,20 +28,18 @@ export class ValidateUniqueUserInterceptor implements Provider<Interceptor> {
     next: () => ValueOrPromise<InvocationResult>,
   ) {
     const newUser: Partial<User> = invocationCtx.args[0]
-    let filter: Filter<User>  = {where: {address: newUser.address}};
-    let errorMessage;
-
-    if (invocationCtx.methodName === "createUser") {
-      errorMessage = 'Duplicate address'
-    }
+    let filter: Filter<User>  = {where: {login: newUser.login}};
 
     const isUserExist: boolean = await this.isUserExist(filter)
 
     if (isUserExist) {
-      const err: ValidationError = new ValidationError(errorMessage)
-      err.statusCode = 409
+      throw new HttpErrors.Conflict('User with this login already exists')
+    }
 
-      throw err
+    const isAddress: boolean = ethers.utils.isAddress(newUser.address!)
+
+    if(!isAddress){
+      throw new HttpErrors.ExpectationFailed('Expected valid eth address')
     }
 
     const result = await next();
