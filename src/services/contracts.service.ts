@@ -111,19 +111,36 @@ export class ContractsService {
     eventOwnedContract.on(eventName, async (...args: any) => {
       const event = [args[args.length - 1]];
       await this.eventActions(eventName, event);
-      // await this.updateEventBlock(event[event.length - 1].blockNumber);
     });
   }
 
   async eventActions(eventName: string, event: any) {
     switch (eventName) {
-      case Events.MINT:
-        await this.processingItemsMinted(event);
+      case Events.INIT:
+        await this.processingTokenInited(event);
         break;
-    }
+      case Events.MINT:
+        break;
+      case Events.ROUTER_LISTED:
+        break;
+      case Events.ROUTER_UPDATED:
+        break;
+      case Events.ROUTER_SOLD:
+        break;
+      case Events.ROUTER_CANCELED:
+        break;
+      case Events.AUCTION_LISTED:
+        break;
+      case Events.AUCTION_BIDDED:
+        break;
+      case Events.AUCTION_CLAIM_ITEM:
+        break;
+      case Events.AUCTION_CLAIM_PAYMENT:
+        break;
+      }
   }
 
-  async processingItemsMinted(events: any[]) {
+  async processingTokenInited(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId;
       const rarity = events[i].args.rarity;
@@ -134,7 +151,115 @@ export class ContractsService {
         name: `Ape#${tokenId}`,
         description: RARITY[rarity],
         image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
+        onSale: false,
+        onAuction: false
       });
     }
+  }
+
+  async processItemListed(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {
+      const tokenId = events[i].args.tokenId;
+      const nftAddress = events[i].args.nftAddress;
+      const nftItem = await this.ApeRepository.findOne(
+      {
+        where:
+        {
+          tokenId: tokenId,
+          contractAddress: nftAddress
+        }
+      }
+      );
+
+      if (nftItem!=null){
+        await this.ApeRepository.listing(nftItem!.id).create({
+          sellerAddress: events[i].args.seller,
+          tokenId: tokenId,
+          price: events[i].args.price.toString(),
+        })
+      }
+    }
+  }
+
+  async processItemListingUpdated(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {
+      const tokenId = events[i].args.tokenId;
+      const nftAddress = events[i].args.nftAddress;
+      const nftItem = await this.ApeRepository.findOne(
+      {
+        where:
+        {
+          tokenId: tokenId,
+          contractAddress: nftAddress
+        }
+      }
+      );
+
+      if (nftItem!=null){
+        await this.ApeRepository.listing(nftItem!.id).patch({price: events[i].args.price.toString()})
+      }
+    }
+  }
+
+  async processItemListingCanceled(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {
+      const tokenId = events[i].args.tokenId;
+      const nftAddress = events[i].args.nftAddress;
+      const nftItem = await this.ApeRepository.findOne(
+      {
+        where:
+        {
+          tokenId: tokenId,
+          contractAddress: nftAddress
+        }
+      }
+      );
+
+      if (nftItem!=null){
+        await this.ApeRepository.listing(nftItem!.id).delete()
+      }
+    }
+  }
+
+  async processItemSold(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {
+      for (let i = 0; i < events.length; ++i) {
+        const tokenId = events[i].args.tokenId;
+        const nftAddress = events[i].args.nftAddress;
+        const nftItem = await this.ApeRepository.findOne(
+        {
+          where:
+          {
+            tokenId: tokenId,
+            contractAddress: nftAddress
+          }
+        }
+        );
+
+        if (nftItem!=null){
+          await this.ApeRepository.sales(nftItem!.id).create({
+            price: events[i].args.price.toString(),
+            timestamp: new Date().getTime().toString()
+          })
+          await this.ApeRepository.listing(nftItem!.id).delete();
+        }
+      }
+    }
+  }
+
+  async processAuctionListing(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {}
+  }
+
+  async processAuctionBid(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {}
+  }
+
+  async processAuictionClaimItem(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {}
+  }
+
+  async processAuictionClaimPayment(events: any[]) {
+    for (let i = 0; i < events.length; ++i) {}
   }
 }
