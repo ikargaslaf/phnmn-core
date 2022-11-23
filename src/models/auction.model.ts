@@ -11,6 +11,11 @@ export class Auction extends Entity {
   @property({
     type: 'string',
   })
+  auctionId?: string;
+
+  @property({
+    type: 'string',
+  })
   seller?: string;
 
   @property({
