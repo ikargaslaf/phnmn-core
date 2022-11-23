@@ -19,6 +19,9 @@ import {
 } from '@loopback/rest';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
+import { intercept } from '@loopback/core';
+import {ValidateUniqueUserInterceptor} from '../interceptors';
+import { SignUpRequestBody } from '../spec/user-controller.specs';
 
 export class UserController {
   constructor(
@@ -26,57 +29,29 @@ export class UserController {
     public userRepository : UserRepository,
   ) {}
 
-  @post('/users')
-  @response(200, {
-    description: 'User model instance',
-    content: {'application/json': {schema: getModelSchemaRef(User)}},
-  })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(User, {
-            title: 'NewUser',
-            exclude: ['id'],
-          }),
+  @intercept(ValidateUniqueUserInterceptor.BINDING_KEY)
+  @post('/users/sign-up', {
+    responses: {
+      '200': {
+        description: 'User',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
         },
       },
-    })
+    },
+  })
+  async create(
+    @requestBody(SignUpRequestBody)
     user: Omit<User, 'id'>,
   ): Promise<User> {
     return this.userRepository.create(user);
   }
 
-  @get('/users/count')
-  @response(200, {
-    description: 'User model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(User) where?: Where<User>,
-  ): Promise<Count> {
-    return this.userRepository.count(where);
-  }
-
-  @get('/users')
-  @response(200, {
-    description: 'Array of User model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(User, {includeRelations: true}),
-        },
-      },
-    },
-  })
-  async find(
-    @param.filter(User) filter?: Filter<User>,
-  ): Promise<User[]> {
-    return this.userRepository.find(filter);
-  }
-
-  @get('/users/{id}')
+  @get('/users/me')
   @response(200, {
     description: 'User model instance',
     content: {
@@ -85,11 +60,12 @@ export class UserController {
       },
     },
   })
-  async findById(
-    @param.path.number('id') id: number,
+  async findMe(
+    @requestBody(SignUpRequestBody)
+    address: string,
     @param.filter(User, {exclude: 'where'}) filter?: FilterExcludingWhere<User>
-  ): Promise<User> {
-    return this.userRepository.findById(id, filter);
+  ): Promise<User|null> {
+    return this.userRepository.findOne({where: {address: address}, ...filter});
   }
 
   @patch('/users/{id}')

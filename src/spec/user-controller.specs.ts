@@ -10,6 +10,7 @@ const SignUpSchema: SchemaObject = {
   },
 };
 
+
 export const SignUpRequestBody: Partial<RequestBodyObject> = {
   description: 'The input of login function',
   required: true,
@@ -17,3 +18,5 @@ export const SignUpRequestBody: Partial<RequestBodyObject> = {
     'application/json': {schema: SignUpSchema},
   },
 };
+
+

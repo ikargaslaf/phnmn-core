@@ -7,6 +7,13 @@ import {Listing} from './listing.model';
 export class Ape extends NftItem {
   @property({
     type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'number',
     default: ''
   })
   rarity?: number;
