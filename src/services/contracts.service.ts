@@ -7,7 +7,7 @@ import {ProviderService} from './provider.service';
 import {HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
-import {ApeRepository} from '../repositories';
+import {ApeRepository, ServiceRepository} from '../repositories';
 
 import {Events, Contracts, RARITY} from '../constants';
 
@@ -25,6 +25,8 @@ export class ContractsService {
     private providerService: ProviderService,
     @repository(ApeRepository)
     private ApeRepository: ApeRepository,
+    @repository(ServiceRepository)
+    private ServiceRepository: ServiceRepository
   ) {
     this.createContractInstanses();
   }
@@ -109,8 +111,9 @@ export class ContractsService {
     const {eventOwnedContract, contractName} =
       this.getContractByString(contract);
     eventOwnedContract.on(eventName, async (...args: any) => {
-      const event = [args[args.length - 1]];
-      await this.eventActions(eventName, event);
+      const event = args[args.length - 1];
+      await this.eventActions(eventName, [event]);
+      await this.ServiceRepository.updateAll({blockNumber: event.blockNumber});
     });
   }
 
