@@ -46,13 +46,25 @@ export class BootObserver implements LifeCycleObserver {
   async start(): Promise<void> {
     const serviceModel = await this.serviceRepository.find();
     const blockNumber = serviceModel[0].blockNumber;
-    const events = await this.contractsService.getEventsFromBlock(
+
+    const eventsCollection = await this.contractsService.getEventsFromBlock(
       blockNumber,
       this.contractsService.collection,
     );
-    for (let i = 0; i < events.length; ++i) {
-      await this.contractsService.eventActions(events[i].name, [events[i]]);
+    console.log(eventsCollection.length)
+    for (let i = 0; i < eventsCollection.length; ++i) {
+      await this.contractsService.eventActions(eventsCollection[i].name, [eventsCollection[i]]);
     }
+
+    const eventsRouter = await this.contractsService.getEventsFromBlock(
+      blockNumber,
+      this.contractsService.router,
+    );
+    console.log(eventsRouter.length)
+    for (let i = 0; i < eventsRouter.length; ++i) {
+      await this.contractsService.eventActions(eventsRouter[i].name, [eventsRouter[i]]);
+    }
+
     const latestBlock = await this.providerService.provider?.getBlockNumber();
     await this.serviceRepository.updateAll({blockNumber: latestBlock});
   }

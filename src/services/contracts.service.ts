@@ -122,12 +122,16 @@ export class ContractsService {
       case Events.MINT:
         break;
       case Events.ROUTER_LISTED:
+        await this.processItemListed(event);
         break;
       case Events.ROUTER_UPDATED:
+        await this.processItemListingUpdated(event);
         break;
       case Events.ROUTER_SOLD:
+        await this.processItemSold(event);
         break;
       case Events.ROUTER_CANCELED:
+        await this.processItemListingCanceled(event);
         break;
       case Events.AUCTION_LISTED:
         break;
@@ -142,18 +146,21 @@ export class ContractsService {
 
   async processingTokenInited(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId;
+      const tokenId = events[i].args.tokenId.toString();
       const rarity = events[i].args.rarity;
-      const meta = await this.ApeRepository.create({
-        tokenId: tokenId,
-        rarity: rarity,
-        contractAddress: process.env.COLLECTION!,
-        name: `Ape#${tokenId}`,
-        description: RARITY[rarity],
-        image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
-        onSale: false,
-        onAuction: false
-      });
+      const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
+      if (checkIfExist==null){
+        await this.ApeRepository.create({
+          tokenId: tokenId,
+          rarity: rarity,
+          contractAddress: process.env.COLLECTION!,
+          name: `Ape#${tokenId}`,
+          description: RARITY[rarity],
+          image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
+          onSale: false,
+          onAuction: false
+        });
+      }
     }
   }
 
@@ -171,12 +178,13 @@ export class ContractsService {
       }
       );
 
-      if (nftItem!=null){
+      if (nftItem!=null && !nftItem.onSale){
         await this.ApeRepository.listing(nftItem!.id).create({
           sellerAddress: events[i].args.seller,
           tokenId: tokenId,
           price: events[i].args.price.toString(),
         })
+        await this.ApeRepository.updateById(nftItem!.id, {onSale:true})
       }
     }
   }
@@ -196,7 +204,7 @@ export class ContractsService {
       );
 
       if (nftItem!=null){
-        await this.ApeRepository.listing(nftItem!.id).patch({price: events[i].args.price.toString()})
+        await this.ApeRepository.listing(nftItem!.id).patch({price: events[i].args.newPrice.toString()})
       }
     }
   }
@@ -217,33 +225,31 @@ export class ContractsService {
 
       if (nftItem!=null){
         await this.ApeRepository.listing(nftItem!.id).delete()
+        await this.ApeRepository.updateById(nftItem!.id, {onSale:false})
       }
     }
   }
 
   async processItemSold(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      for (let i = 0; i < events.length; ++i) {
-        const tokenId = events[i].args.tokenId;
-        const nftAddress = events[i].args.nftAddress;
-        const nftItem = await this.ApeRepository.findOne(
+      const tokenId = events[i].args.tokenId;
+      const nftAddress = events[i].args.nftAddress;
+      const nftItem = await this.ApeRepository.findOne(
+      {
+        where:
         {
-          where:
-          {
-            tokenId: tokenId,
-            contractAddress: nftAddress
-          }
-        }
-        );
-
-        if (nftItem!=null){
-          await this.ApeRepository.sales(nftItem!.id).create({
-            price: events[i].args.price.toString(),
-            timestamp: new Date().getTime().toString()
-          })
-          await this.ApeRepository.listing(nftItem!.id).delete();
+          tokenId: tokenId,
+          contractAddress: nftAddress
         }
       }
+      );
+
+      await this.ApeRepository.sales(nftItem!.id).create({
+        price: events[i].args.price.toString(),
+        timestamp: new Date().getTime().toString()
+      })
+      await this.ApeRepository.listing(nftItem!.id).delete();
+      await this.ApeRepository.updateById(nftItem!.id, {onSale:false})
     }
   }
 

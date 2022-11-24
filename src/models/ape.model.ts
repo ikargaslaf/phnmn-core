@@ -13,10 +13,10 @@ export class Ape extends Entity {
   id?: number;
 
   @property({
-    type: 'number',
-    default: '0'
+    type: 'string',
+    default: ''
   })
-  tokenId?: number;
+  tokenId?: string;
 
   @property({
     type: 'string',
