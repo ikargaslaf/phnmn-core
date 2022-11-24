@@ -51,7 +51,7 @@ export class BootObserver implements LifeCycleObserver {
       blockNumber,
       this.contractsService.collection,
     );
-    console.log(eventsCollection.length)
+
     for (let i = 0; i < eventsCollection.length; ++i) {
       await this.contractsService.eventActions(eventsCollection[i].name, [eventsCollection[i]]);
     }
@@ -60,7 +60,7 @@ export class BootObserver implements LifeCycleObserver {
       blockNumber,
       this.contractsService.router,
     );
-    console.log(eventsRouter.length)
+
     for (let i = 0; i < eventsRouter.length; ++i) {
       await this.contractsService.eventActions(eventsRouter[i].name, [eventsRouter[i]]);
     }
