@@ -20,12 +20,14 @@ import {
   Sales,
 } from '../models';
 import {ApeRepository} from '../repositories';
+import {authenticate} from '@loopback/authentication';
 
 export class ApeSalesController {
   constructor(
     @repository(ApeRepository) protected apeRepository: ApeRepository,
   ) { }
 
+  @authenticate('jwt')
   @get('/apes/{id}/sales', {
     responses: {
       '200': {

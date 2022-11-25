@@ -48,7 +48,9 @@ export class UserController {
     user: Omit<User, 'id'>,
   ): Promise<TokenObject> {
     const foundUser = await this.userRepository.findOne({where: {login: user.login, address: user.address}});
+    console.log(foundUser)
     const userProfile = this.userService.convertToUserProfile(foundUser as User);
+    console.log(userProfile)
     const accessToken = await this.jwtService.generateToken(userProfile);
     const Token: TokenObject = {
       accessToken: accessToken,
@@ -76,6 +78,7 @@ export class UserController {
     @inject(SecurityBindings.USER) currentUserProfile: UserProfile,
   ): Promise<User| null> {
     const userId = currentUserProfile[securityId];
+    console.log(userId);
     return this.userRepository.findOne({where: {address: userId}});
   }
 

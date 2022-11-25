@@ -3,8 +3,9 @@ import {HttpErrors} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
-
-export class UserService {
+import {UserService as LoopbackUserService} from '@loopback/authentication';
+import {Credentials} from '../types';
+export class UserService implements LoopbackUserService<User, Credentials>  {
   constructor(
     @inject('repositories.UserRepository')
     public userRepository: UserRepository,
@@ -14,7 +15,7 @@ export class UserService {
   convertToUserProfile(user: User): UserProfile {
     return {
       [securityId]: user.address,
-      id: user.address,
+      id: user.login,
       role: user.role,
     };
   }
@@ -29,5 +30,18 @@ export class UserService {
     ) {
       throw new HttpErrors.Forbidden('Access denied');
     }
+  }
+
+  async verifyCredentials(credentials: Credentials): Promise<User> {
+    const invalidCredentialsError = 'Invalid login or password.';
+    console.log(credentials)
+    const foundUser = await this.userRepository.findOne({
+      where: {login: credentials.login, address: credentials.address},
+    });
+    console.log(foundUser)
+    if (!foundUser) {
+      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+    }
+    return foundUser;
   }
 }

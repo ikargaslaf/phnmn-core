@@ -11,6 +11,8 @@ import {
   Ape,
 } from '../models';
 import {ListingRepository} from '../repositories';
+import {authenticate} from '@loopback/authentication';
+@authenticate('jwt')
 
 export class ListingApeController {
   constructor(
