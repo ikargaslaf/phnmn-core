@@ -38,7 +38,7 @@ export class Attributes extends Entity {
     type: 'number',
     required: true,
   })
-  jewelry: number;
+  jewerly: number;
 
   @property({
     type: 'number',

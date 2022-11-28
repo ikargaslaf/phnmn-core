@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/prefer-for-of */
-import {injectable, /* inject, */ BindingScope, service} from '@loopback/core';
+import {injectable, /* inject, */ BindingScope, service, DefaultConfigurationResolver} from '@loopback/core';
 
 import {BigNumber, Contract, ethers} from 'ethers';
 import {LogDescription} from 'ethers/lib/utils';
@@ -14,6 +14,7 @@ import {Events, Contracts, RARITY} from '../constants';
 import Collection from '../contracts/abi/Collection.json';
 import Router from '../contracts/abi/Router.json';
 import Auction from '../contracts/abi/Auction.json'
+import { generateAttributes, generateImage} from '../utils';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class ContractsService {
@@ -153,6 +154,9 @@ export class ContractsService {
       const rarity = events[i].args.rarity;
       const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
+        const attributes = generateAttributes(tokenId);
+        console.log(attributes)
+        await generateImage(tokenId, rarity, attributes)
         const meta = await this.ApeRepository.create({
           tokenId: tokenId,
           rarity: rarity,
@@ -163,7 +167,7 @@ export class ContractsService {
           onSale: false,
           onAuction: false
         });
-        await this.ApeRepository.attributes(meta.id).create({});
+        await this.ApeRepository.attributes(meta.id).create({...attributes});
       }
     }
   }

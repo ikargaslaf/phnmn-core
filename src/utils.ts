@@ -55,10 +55,14 @@ export function generateAttributes(tokenId: string) {
   for (let i = 0; i < 5; i++) {
     let fromHash = extractFromHash(hash, lastUsedIndex, /[0-9]/);
     lastUsedIndex = fromHash.lastUsedIndex;
-    attributes.set(PARTS[i], fromHash.extractedLetter);
+    let attribute = (+fromHash.extractedLetter % 6)
+    if(PARTS[i]=='body'&& attribute==0){
+      attribute = attribute + 1;
+    }
+    attributes.set(PARTS[i], attribute.toString());
   }
   const Attributes = Object.fromEntries(attributes)
-  console.log();
+  console.log(Attributes);
   return Attributes;
 }
 
