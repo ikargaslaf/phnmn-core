@@ -163,7 +163,7 @@ export class ContractsService {
           contractAddress: process.env.COLLECTION!,
           name: `Ape#${tokenId}`,
           description: RARITY[rarity],
-          image: `./public/assets/${RARITY[rarity]}/${RARITY[rarity]}_BASE.png`,
+          image: `./public/${tokenId}.png`,
           onSale: false,
           onAuction: false
         });
