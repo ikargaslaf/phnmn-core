@@ -1,14 +1,14 @@
 export enum Events {
   INIT = 'Initialized',
   MINT = 'Mint',
-  ROUTER_LISTED = 'ItemListed',
-  ROUTER_SOLD = 'ItemSold',
-  ROUTER_UPDATED = 'ItemUpdated',
-  ROUTER_CANCELED = 'ItemCanceled',
-  AUCTION_LISTED = 'Listed',
-  AUCTION_BIDDED = 'Bidded',
-  AUCTION_CLAIM_ITEM = 'ItemClaimed',
-  AUCTION_CLAIM_PAYMENT = 'PaymentClaimed'
+  ROUTER_LISTED = 'ListItem',
+  ROUTER_SOLD = 'BuyItem',
+  ROUTER_UPDATED = 'UpdateListing',
+  ROUTER_CANCELED = 'CancelListing',
+  AUCTION_LISTED = 'ListOnAuction',
+  AUCTION_BIDDED = 'Bid',
+  AUCTION_CLAIM_ITEM = 'ClaimItem',
+  AUCTION_CLAIM_PAYMENT = 'ClaimPayment'
 }
 
 export enum Contracts {
