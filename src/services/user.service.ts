@@ -34,11 +34,9 @@ export class UserService implements LoopbackUserService<User, Credentials>  {
 
   async verifyCredentials(credentials: Credentials): Promise<User> {
     const invalidCredentialsError = 'Invalid login or password.';
-    console.log(credentials)
     const foundUser = await this.userRepository.findOne({
       where: {login: credentials.login, address: credentials.address},
     });
-    console.log(foundUser)
     if (!foundUser) {
       throw new HttpErrors.Unauthorized(invalidCredentialsError);
     }

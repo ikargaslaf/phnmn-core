@@ -149,7 +149,7 @@ export class ContractsService {
 
   async processingTokenInited(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId.toString();
+      const tokenId = events[i].args.tokenId.toHexString();
       const rarity = events[i].args.rarity;
       const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
@@ -169,7 +169,7 @@ export class ContractsService {
 
   async processItemListed(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId;
+      const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
       const nftItem = await this.ApeRepository.findOne(
       {
@@ -194,7 +194,7 @@ export class ContractsService {
 
   async processItemListingUpdated(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId;
+      const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
       const nftItem = await this.ApeRepository.findOne(
       {
@@ -214,7 +214,7 @@ export class ContractsService {
 
   async processItemListingCanceled(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId;
+      const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
       const nftItem = await this.ApeRepository.findOne(
       {
@@ -235,7 +235,7 @@ export class ContractsService {
 
   async processItemSold(events: any[]) {
     for (let i = 0; i < events.length; ++i) {
-      const tokenId = events[i].args.tokenId;
+      const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
       const nftItem = await this.ApeRepository.findOne(
       {
