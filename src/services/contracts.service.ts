@@ -153,7 +153,7 @@ export class ContractsService {
       const rarity = events[i].args.rarity;
       const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
-        await this.ApeRepository.create({
+        const meta = await this.ApeRepository.create({
           tokenId: tokenId,
           rarity: rarity,
           contractAddress: process.env.COLLECTION!,
@@ -163,6 +163,7 @@ export class ContractsService {
           onSale: false,
           onAuction: false
         });
+        await this.ApeRepository.attributes(meta.id).create({});
       }
     }
   }

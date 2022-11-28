@@ -5,3 +5,4 @@ export * from './nft-item.model';
 export * from './ape.model';
 export * from './listing.model';
 export * from './auction.model';
+export * from './attributes.model';

@@ -2,6 +2,7 @@ import {model, property, hasMany, hasOne, Entity} from '@loopback/repository';
 import {NftItem} from '.';
 import {Sales} from './sales.model';
 import {Listing} from './listing.model';
+import {Attributes} from './attributes.model';
 
 @model()
 export class Ape extends Entity {
@@ -49,42 +50,6 @@ export class Ape extends Entity {
   rarity?: number;
 
   @property({
-    type: 'number',
-    default: 0
-  })
-  mask?: number;
-
-  @property({
-    type: 'number',
-    default: 0
-  })
-  hat?: number;
-
-  @property({
-    type: 'number',
-    default: 0
-  })
-  glasses?: number;
-
-  @property({
-    type: 'number',
-    default: 0
-  })
-  jewerly?: number;
-
-  @property({
-    type: 'number',
-    default: 0
-  })
-  clothes?: number;
-
-  @property({
-    type: 'number',
-    default: 0
-  })
-  tatoos?: number;
-
-  @property({
     type: 'boolean',
     default: 'false'
   })
@@ -101,6 +66,9 @@ export class Ape extends Entity {
 
   @hasOne(() => Listing)
   listing: Listing;
+
+  @hasOne(() => Attributes)
+  attributes: Attributes;
 
   constructor(data?: Partial<Ape>) {
     super(data);
