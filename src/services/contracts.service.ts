@@ -154,8 +154,7 @@ export class ContractsService {
       const rarity = events[i].args.rarity;
       const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
-        const attributes = generateAttributes(tokenId);
-        console.log(attributes)
+        const attributes = generateAttributes(tokenId, rarity);
         await generateImage(tokenId, rarity, attributes)
         const meta = await this.ApeRepository.create({
           tokenId: tokenId,

@@ -6,8 +6,7 @@ export type Credentials = {
 
 export type Attributes = {
   body: string
-  hair: string
-  hat: string
+  head: string
   costume: string
   jewerly: string
   custom_1?: string

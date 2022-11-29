@@ -7,8 +7,7 @@ const fs = require('fs');
 const RARITY = ['COMMON', 'RARE', 'EPIC', 'LEGENDARY'];
 const PARTS = [
   'body',
-  'hair',
-  'hat',
+  'head',
   'costume',
   'jewerly',
   'custom_1',
@@ -17,6 +16,13 @@ const PARTS = [
   'custom_4',
   'custom_5',
 ]
+const DIVISOR = [6, 12, 6, 5]
+const NUM_ATTRIBUTES = new Map([
+  ['COMMON', 4],
+  ['RARE', 4],
+  ['EPIC', 6],
+  ['LEGENDARY', 1],
+])
 
 export async function generateImage(
   tokenId: string | undefined,
@@ -47,22 +53,29 @@ export async function generateImage(
   fs.writeFileSync(`./public/${tokenId}.png`, buf);
 }
 
-export function generateAttributes(tokenId: string) {
+export function generateAttributes(tokenId: string, rarity: number) {
   let hash = ethers.utils.keccak256(toUtf8Bytes(tokenId));
   hash = hash.substring(2);
+  const num_attributes = NUM_ATTRIBUTES.get(RARITY[rarity])
   let lastUsedIndex = 0;
+  let fromHash;
   let attributes: Map<string,string> = new Map();
-  for (let i = 0; i < 5; i++) {
-    let fromHash = extractFromHash(hash, lastUsedIndex, /[0-9]/);
+
+  for (let i = 0; i < num_attributes!; i++) {
+    fromHash = extractFromHash(hash, lastUsedIndex, /[0-9a-zA-Z]/);
     lastUsedIndex = fromHash.lastUsedIndex;
-    let attribute = (+fromHash.extractedLetter % 6)
+    let attribute = parseInt(fromHash.extractedLetter, 36) % DIVISOR[i]
+
     if(PARTS[i]=='body'&& attribute==0){
       attribute = attribute + 1;
     }
+    if(PARTS[i]=='head'&& attribute==0){
+      attribute = attribute + 1;
+    }
+
     attributes.set(PARTS[i], attribute.toString());
   }
   const Attributes = Object.fromEntries(attributes)
-  console.log(Attributes);
   return Attributes;
 }
 

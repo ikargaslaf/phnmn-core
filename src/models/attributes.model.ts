@@ -20,13 +20,7 @@ export class Attributes extends Entity {
     type: 'number',
     required: true,
   })
-  hair: number;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  hat: number;
+  head: number;
 
   @property({
     type: 'number',
