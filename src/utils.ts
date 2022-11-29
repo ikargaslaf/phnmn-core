@@ -4,7 +4,7 @@ import {toUtf8Bytes} from 'ethers/lib/utils';
 
 const fs = require('fs');
 
-const RARITY = ['COMMON', 'RARE', 'EPIC', 'LEGENDARY'];
+const RARITY = ['COMMON', 'UNCOMMON', 'RARE', 'EPIC', 'LEGENDARY'];
 const PARTS = [
   'body',
   'head',
@@ -16,9 +16,16 @@ const PARTS = [
   'custom_4',
   'custom_5',
 ]
-const DIVISOR = [6, 12, 6, 5]
+const DIVISOR = [
+  [3, 7, 4, 3],
+  [6, 16, 15, 5],
+  [3, 19, 14, 7],
+  [3, 7, 4, 3],
+  [3, 7, 4, 3]
+]
 const NUM_ATTRIBUTES = new Map([
   ['COMMON', 4],
+  ['UNCOMMON', 4],
   ['RARE', 4],
   ['EPIC', 6],
   ['LEGENDARY', 1],
@@ -64,7 +71,7 @@ export function generateAttributes(tokenId: string, rarity: number) {
   for (let i = 0; i < num_attributes!; i++) {
     fromHash = extractFromHash(hash, lastUsedIndex, /[0-9a-zA-Z]/);
     lastUsedIndex = fromHash.lastUsedIndex;
-    let attribute = parseInt(fromHash.extractedLetter, 36) % DIVISOR[i]
+    let attribute = parseInt(fromHash.extractedLetter, 36) % DIVISOR[rarity][i]
 
     if(PARTS[i]=='body'&& attribute==0){
       attribute = attribute + 1;
