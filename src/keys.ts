@@ -4,8 +4,8 @@ import {BindingKey} from '@loopback/context';
 import { UserService } from './services';
 
 export namespace TokenServiceConstants {
-  export const TOKEN_SECRET_VALUE = 'PhNmNcOrESecretPhrase';
-  export const TOKEN_EXPIRES_IN_VALUE = '36000'; // 10 hours
+  export const TOKEN_SECRET_VALUE = process.env.TOKEN_SECRET_VALUE as string;
+  export const TOKEN_EXPIRES_IN_VALUE = process.env.TOKEN_EXPIRES_IN_VALUE as string; 
 }
 
 export namespace TokenServiceBindings {
