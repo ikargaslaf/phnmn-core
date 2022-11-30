@@ -37,13 +37,14 @@
   #    exists:
   #      - Dockerfile
 deploy:
+  image: alpine
   stage: deploy
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
      - cd /opt/compose/phnmn
      - ls -l
-     - apt install docker-compose
+     - apt-get update && apt install docker-compose
      - docker-compose up -d
      - sleep 5
      - docker ps
