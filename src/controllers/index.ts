@@ -4,3 +4,4 @@ export * from './sales-ape.controller';
 export * from './ape-listing.controller';
 export * from './listing-ape.controller';
 export * from './ape.controller';
+export * from './collection.controller';

@@ -6,3 +6,4 @@ export * from './ape.model';
 export * from './listing.model';
 export * from './auction.model';
 export * from './attributes.model';
+export * from './collection.model';
