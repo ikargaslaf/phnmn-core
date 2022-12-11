@@ -57,7 +57,7 @@ export async function generateImage(
   }
 
   const buf = canvas.toBuffer('image/png');
-  fs.writeFileSync(`./public/${tokenId}.png`, buf);
+  fs.writeFileSync(`./public/apes/${tokenId}.png`, buf);
 }
 
 export function generateAttributes(tokenId: string, rarity: number) {
