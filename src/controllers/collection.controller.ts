@@ -17,6 +17,7 @@ import {
   del,
   requestBody,
   response,
+  deprecated,
 } from '@loopback/rest';
 import {Collection} from '../models';
 import {CollectionRepository} from '../repositories';
@@ -30,7 +31,7 @@ export class CollectionController {
     private contractService: ContractsService
   ) {}
 
-
+  @deprecated()
   @post('/collections')
   @response(200, {
     description: 'Collection model instance',

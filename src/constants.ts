@@ -20,5 +20,5 @@ export enum Contracts {
 export const RARITY = ['COMMON', 'RARE', 'EPIC', 'LEGENDARY'];
 
 export enum Collections {
-  COLLECTION = 'Collection'
+  APES = 'APE_COLLECTION'
 }

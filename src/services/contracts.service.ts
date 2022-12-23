@@ -34,7 +34,7 @@ export class ContractsService {
 
   async createContractInstanses() {
     this.collection = new ethers.Contract(
-      process.env.COLLECTION as string,
+      process.env.APE_COLLECTION as string,
       Collection.abi,
       this.providerService.provider,
     );
