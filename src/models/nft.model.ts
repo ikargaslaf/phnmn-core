@@ -1,11 +1,10 @@
 import {model, property, hasMany, hasOne, Entity} from '@loopback/repository';
-import {NftItem} from '.';
 import {Sales} from './sales.model';
 import {Listing} from './listing.model';
-import {Attributes} from './attributes.model';
+import {ApeAttributes} from './ape-attributes.model';
 
 @model()
-export class Ape extends Entity {
+export class Nft extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -44,12 +43,6 @@ export class Ape extends Entity {
   image?: string;
 
   @property({
-    type: 'number',
-    default: 0
-  })
-  rarity?: number;
-
-  @property({
     type: 'boolean',
     default: 'false'
   })
@@ -67,16 +60,16 @@ export class Ape extends Entity {
   @hasOne(() => Listing)
   listing: Listing;
 
-  @hasOne(() => Attributes)
-  attributes: Attributes;
+  @hasOne(() => ApeAttributes)
+  apeAttributes: ApeAttributes;
 
-  constructor(data?: Partial<Ape>) {
+  constructor(data?: Partial<Nft>) {
     super(data);
   }
 }
 
-export interface ApeRelations {
+export interface NftRelations {
   // describe navigational properties here
 }
 
-export type ApeWithRelations = Ape & ApeRelations;
+export type NftWithRelations = Nft & NftRelations;

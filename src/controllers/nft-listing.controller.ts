@@ -16,15 +16,15 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Ape,
+  Nft,
   Listing,
 } from '../models';
-import {ApeRepository} from '../repositories';
+import {NftRepository} from '../repositories';
 import {authenticate} from '@loopback/authentication';
 
 export class ApeListingController {
   constructor(
-    @repository(ApeRepository) protected apeRepository: ApeRepository,
+    @repository(NftRepository) protected NftRepository: NftRepository,
   ) { }
 
   @authenticate('jwt')
@@ -44,6 +44,6 @@ export class ApeListingController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Listing>,
   ): Promise<Listing> {
-    return this.apeRepository.listing(id).get(filter);
+    return this.NftRepository.listing(id).get(filter);
   }
 }

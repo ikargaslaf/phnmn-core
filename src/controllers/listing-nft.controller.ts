@@ -8,7 +8,7 @@ import {
 } from '@loopback/rest';
 import {
   Listing,
-  Ape,
+  Nft,
 } from '../models';
 import {ListingRepository} from '../repositories';
 import {authenticate} from '@loopback/authentication';
@@ -26,7 +26,7 @@ export class ListingApeController {
         description: 'Ape belonging to Listing',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Ape)},
+            schema: {type: 'array', items: getModelSchemaRef(Nft)},
           },
         },
       },
@@ -34,7 +34,7 @@ export class ListingApeController {
   })
   async getApe(
     @param.path.number('id') id: typeof Listing.prototype.id,
-  ): Promise<Ape> {
-    return this.listingRepository.ape(id);
+  ): Promise<Nft> {
+    return this.listingRepository.nft(id);
   }
 }

@@ -8,33 +8,33 @@ import {
 } from '@loopback/rest';
 import {
   Sales,
-  Ape,
+  Nft,
 } from '../models';
 import {SalesRepository} from '../repositories';
 import {authenticate} from '@loopback/authentication';
 @authenticate('jwt')
 
-export class SalesApeController {
+export class SalesNftController {
   constructor(
     @repository(SalesRepository)
     public salesRepository: SalesRepository,
   ) { }
 
-  @get('/sales/{id}/ape', {
+  @get('/sales/{id}/nft', {
     responses: {
       '200': {
-        description: 'Ape belonging to Sales',
+        description: 'Nft belonging to Sales',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Ape)},
+            schema: {type: 'array', items: getModelSchemaRef(Nft)},
           },
         },
       },
     },
   })
-  async getApe(
+  async getNft(
     @param.path.number('id') id: typeof Sales.prototype.id,
-  ): Promise<Ape> {
-    return this.salesRepository.ape(id);
+  ): Promise<Nft> {
+    return this.salesRepository.nft(id);
   }
 }

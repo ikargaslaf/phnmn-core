@@ -1,5 +1,5 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Ape} from './ape.model';
+import {Nft} from './nft.model';
 
 @model()
 export class Sales extends Entity {
@@ -20,8 +20,8 @@ export class Sales extends Entity {
   })
   timestamp?: string;
 
-  @belongsTo(() => Ape)
-  apeId: number;
+  @belongsTo(() => Nft)
+  nftId: number;
 
   constructor(data?: Partial<Sales>) {
     super(data);

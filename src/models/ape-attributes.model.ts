@@ -1,14 +1,20 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Ape} from './ape.model';
+import {Nft} from './nft.model';
 
 @model({settings: {strict: false}})
-export class Attributes extends Entity {
+export class ApeAttributes extends Entity {
   @property({
     type: 'number',
     id: true,
     generated: true,
   })
   id?: number;
+
+  @property({
+    type: 'number',
+    default: 0
+  })
+  rarity?: number;
 
   @property({
     type: 'number',
@@ -37,20 +43,20 @@ export class Attributes extends Entity {
   @property({
     type: 'number',
   })
-  apeId?: number;
+  nftId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
-  constructor(data?: Partial<Attributes>) {
+  constructor(data?: Partial<ApeAttributes>) {
     super(data);
   }
 }
 
-export interface AttributesRelations {
+export interface ApeAttributesRelations {
   // describe navigational properties here
 }
 
-export type AttributesWithRelations = Attributes & AttributesRelations;
+export type AttributesWithRelations = ApeAttributes & ApeAttributesRelations;

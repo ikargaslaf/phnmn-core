@@ -16,22 +16,22 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Ape,
+  Nft,
   Sales,
 } from '../models';
-import {ApeRepository} from '../repositories';
+import {NftRepository} from '../repositories';
 import {authenticate} from '@loopback/authentication';
 
-export class ApeSalesController {
+export class NftSalesController {
   constructor(
-    @repository(ApeRepository) protected apeRepository: ApeRepository,
+    @repository(NftRepository) protected NftRepository: NftRepository,
   ) { }
 
   @authenticate('jwt')
-  @get('/apes/{id}/sales', {
+  @get('/nft/{id}/sales', {
     responses: {
       '200': {
-        description: 'Array of Ape has many Sales',
+        description: 'Array of Nft has many Sales',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Sales)},
@@ -44,6 +44,6 @@ export class ApeSalesController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Sales>,
   ): Promise<Sales[]> {
-    return this.apeRepository.sales(id).find(filter);
+    return this.NftRepository.sales(id).find(filter);
   }
 }

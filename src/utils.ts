@@ -101,3 +101,12 @@ function extractFromHash(hash: string, lastUsedIndex: number, pattern: RegExp) {
     extractedLetter: extractedLetter,
   };
 }
+
+function getEnv(env: string)  {
+  const value = process.env[env];
+  if (typeof value === 'undefined') {
+    console.log(`${env} has not been set.`);
+    return "";
+  }
+  return value;
+};

@@ -7,7 +7,7 @@ import {ProviderService} from './provider.service';
 import {HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
-import {ApeRepository, ServiceRepository} from '../repositories';
+import {NftRepository, ServiceRepository} from '../repositories';
 
 import {Events, Contracts, RARITY} from '../constants';
 
@@ -24,8 +24,8 @@ export class ContractsService {
   constructor(
     @service(ProviderService)
     private providerService: ProviderService,
-    @repository(ApeRepository)
-    private ApeRepository: ApeRepository,
+    @repository(NftRepository)
+    private NftRepository: NftRepository,
     @repository(ServiceRepository)
     private ServiceRepository: ServiceRepository
   ) {
@@ -152,13 +152,12 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const rarity = events[i].args.rarity;
-      const checkIfExist = await this.ApeRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
+      const checkIfExist = await this.NftRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
         const attributes = generateAttributes(tokenId, rarity);
         await generateImage(tokenId, rarity, attributes)
-        const meta = await this.ApeRepository.create({
+        const meta = await this.NftRepository.create({
           tokenId: tokenId,
-          rarity: rarity,
           contractAddress: process.env.COLLECTION!,
           name: `Ape#${tokenId}`,
           description: RARITY[rarity],
@@ -166,7 +165,7 @@ export class ContractsService {
           onSale: false,
           onAuction: false
         });
-        await this.ApeRepository.attributes(meta.id).create({...attributes});
+        await this.NftRepository.apeAttributes(meta.id).create({rarity: rarity,...attributes});
       }
     }
   }
@@ -175,7 +174,7 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
-      const nftItem = await this.ApeRepository.findOne(
+      const nftItem = await this.NftRepository.findOne(
       {
         where:
         {
@@ -186,12 +185,12 @@ export class ContractsService {
       );
 
       if (nftItem!=null && !nftItem.onSale){
-        await this.ApeRepository.listing(nftItem!.id).create({
+        await this.NftRepository.listing(nftItem!.id).create({
           sellerAddress: events[i].args.seller,
           tokenId: tokenId,
           price: events[i].args.price.toString(),
         })
-        await this.ApeRepository.updateById(nftItem!.id, {onSale:true})
+        await this.NftRepository.updateById(nftItem!.id, {onSale:true})
       }
     }
   }
@@ -200,7 +199,7 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
-      const nftItem = await this.ApeRepository.findOne(
+      const nftItem = await this.NftRepository.findOne(
       {
         where:
         {
@@ -211,7 +210,7 @@ export class ContractsService {
       );
 
       if (nftItem!=null){
-        await this.ApeRepository.listing(nftItem!.id).patch({price: events[i].args.newPrice.toString()})
+        await this.NftRepository.listing(nftItem!.id).patch({price: events[i].args.newPrice.toString()})
       }
     }
   }
@@ -220,7 +219,7 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
-      const nftItem = await this.ApeRepository.findOne(
+      const nftItem = await this.NftRepository.findOne(
       {
         where:
         {
@@ -231,8 +230,8 @@ export class ContractsService {
       );
 
       if (nftItem!=null){
-        await this.ApeRepository.listing(nftItem!.id).delete()
-        await this.ApeRepository.updateById(nftItem!.id, {onSale:false})
+        await this.NftRepository.listing(nftItem!.id).delete()
+        await this.NftRepository.updateById(nftItem!.id, {onSale:false})
       }
     }
   }
@@ -241,7 +240,7 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const nftAddress = events[i].args.nftAddress;
-      const nftItem = await this.ApeRepository.findOne(
+      const nftItem = await this.NftRepository.findOne(
       {
         where:
         {
@@ -251,12 +250,12 @@ export class ContractsService {
       }
       );
 
-      await this.ApeRepository.sales(nftItem!.id).create({
+      await this.NftRepository.sales(nftItem!.id).create({
         price: events[i].args.price.toString(),
         timestamp: new Date().getTime().toString()
       })
-      await this.ApeRepository.listing(nftItem!.id).delete();
-      await this.ApeRepository.updateById(nftItem!.id, {onSale:false})
+      await this.NftRepository.listing(nftItem!.id).delete();
+      await this.NftRepository.updateById(nftItem!.id, {onSale:false})
     }
   }
 

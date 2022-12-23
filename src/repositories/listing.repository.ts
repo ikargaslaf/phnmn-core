@@ -1,8 +1,8 @@
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {Listing, ListingRelations, Ape} from '../models';
-import {ApeRepository} from './ape.repository';
+import {Listing, ListingRelations, Nft} from '../models';
+import {NftRepository} from './nft.repository';
 
 export class ListingRepository extends DefaultCrudRepository<
   Listing,
@@ -10,13 +10,13 @@ export class ListingRepository extends DefaultCrudRepository<
   ListingRelations
 > {
 
-  public readonly ape: BelongsToAccessor<Ape, typeof Listing.prototype.id>;
+  public readonly nft: BelongsToAccessor<Nft, typeof Listing.prototype.id>;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource, @repository.getter('ApeRepository') protected apeRepositoryGetter: Getter<ApeRepository>,
+    @inject('datasources.db') dataSource: DbDataSource, @repository.getter('NftRepository') protected nftRepositoryGetter: Getter<NftRepository>,
   ) {
     super(Listing, dataSource);
-    this.ape = this.createBelongsToAccessorFor('ape', apeRepositoryGetter,);
-    this.registerInclusionResolver('ape', this.ape.inclusionResolver);
+    this.nft = this.createBelongsToAccessorFor('nft', nftRepositoryGetter,);
+    this.registerInclusionResolver('nft', this.nft.inclusionResolver);
   }
 }
