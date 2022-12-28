@@ -48,7 +48,7 @@ export class BootObserver implements LifeCycleObserver {
       const addresses = collections.map(collection => {
         const collectionAddress = getEnv(collection)
         if (collectionAddress!=""){
-          return collection
+          return collectionAddress
         }
       })
 

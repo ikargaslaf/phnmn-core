@@ -28,10 +28,10 @@ export class ApeListingController {
   ) { }
 
   @authenticate('jwt')
-  @get('/apes/{id}/listing', {
+  @get('/nft/{id}/listing', {
     responses: {
       '200': {
-        description: 'Ape has one Listing',
+        description: 'Nft has one Listing',
         content: {
           'application/json': {
             schema: getModelSchemaRef(Listing),

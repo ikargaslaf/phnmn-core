@@ -152,13 +152,13 @@ export class ContractsService {
     for (let i = 0; i < events.length; ++i) {
       const tokenId = events[i].args.tokenId.toHexString();
       const rarity = events[i].args.rarity;
-      const checkIfExist = await this.NftRepository.findOne({where: {contractAddress: process.env.COLLECTION!, tokenId: tokenId}});
+      const checkIfExist = await this.NftRepository.findOne({where: {contractAddress: process.env.APE_COLLECTION!, tokenId: tokenId}});
       if (checkIfExist==null){
         const attributes = generateAttributes(tokenId, rarity);
         await generateImage(tokenId, rarity, attributes)
         const meta = await this.NftRepository.create({
           tokenId: tokenId,
-          contractAddress: process.env.COLLECTION!,
+          contractAddress: process.env.APE_COLLECTION!,
           name: `Ape#${tokenId}`,
           description: RARITY[rarity],
           image: `/apes/${tokenId}.png`,
