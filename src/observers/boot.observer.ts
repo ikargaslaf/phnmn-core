@@ -56,7 +56,7 @@ export class BootObserver implements LifeCycleObserver {
         await this.collectionRepository.create({
           name: "Default collection name",
           description: "Default collection description",
-          image: "/assets/collections/default_collection_logo.jpg",
+          image: "/apes/default_collection_logo.jpg",
           address: addresses[i],
           totalValue: '0',
           floorPrice: '0',
