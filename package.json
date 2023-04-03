@@ -32,7 +32,9 @@
     "preopenapi-spec": "npm run build",
     "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run rebuild",
-    "start": "node -r source-map-support/register .",
+    "dev": "lb-tsc && node -r source-map-support/register .",
+    "start": "pm2 start ecosystem.config.js --env production",
+    "stop": "pm2 stop ecosystem.config.js --env production",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build"
   },
@@ -40,7 +42,7 @@
     "type": "git",
     "url": ""
   },
-  "author": "Egor Kozlov <egor.kozlov@rsquad.io>",
+  "author": "Egor Kozlov <kozlov@papaya.land>",
   "license": "",
   "files": [
     "README.md",
@@ -49,21 +51,28 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^4.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/repository": "^4.1.2",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/rest-explorer": "^4.1.2",
-    "@loopback/service-proxy": "^4.1.2",
+    "@alch/alchemy-web3": "^1.4.4",
+    "@loopback/authentication": "^9.0.4",
+    "@loopback/boot": "^5.0.4",
+    "@loopback/core": "^4.0.4",
+    "@loopback/repository": "^5.0.4",
+    "@loopback/rest": "^12.0.4",
+    "@loopback/rest-explorer": "^5.0.4",
+    "@loopback/service-proxy": "^5.0.4",
+    "canvas": "^2.8.0",
+    "dotenv": "^10.0.0",
+    "ethers": "^5.7.2",
+    "jsonwebtoken": "^8.5.1",
+    "loopback-connector-postgresql": "^5.5.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
+    "@loopback/build": "^9.0.4",
+    "@loopback/eslint-config": "^13.0.4",
+    "@loopback/testlab": "^5.0.4",
+    "@types/node": "^14.18.32",
+    "eslint": "^8.25.0",
     "source-map-support": "^0.5.21",
-    "@loopback/testlab": "^4.1.2",
-    "@types/node": "^12.20.47",
-    "@loopback/eslint-config": "^12.0.4",
-    "eslint": "^8.10.0",
-    "typescript": "~4.6.3"
+    "typescript": "~4.8.4"
   }
 }
